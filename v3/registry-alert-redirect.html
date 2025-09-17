@@ -1,4 +1,4 @@
-<!doctype html><html><head><title>Netdata Agent Alert Redirect</title><meta name="application-name" content="netdata"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,minimum-scale=1"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><script>function loadStyle(url, { media, insertAfter: aref, insertBefore: bref, rel, type } = {}) {
+<!doctype html><html><head><title>Netdata Agent 告警重定向</title><meta name="application-name" content="netdata"/><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,minimum-scale=1"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><script>function loadStyle(url, { media, insertAfter: aref, insertBefore: bref, rel, type } = {}) {
         rel = rel || 'stylesheet'
         type = type || 'text/css'
         return new Promise(function(resolve, reject) {
@@ -31,7 +31,7 @@
       }
 
       loadStyle("v2/static/splash.css")
-      loadStyle("v2/favicon.ico", {rel: "icon", type: "image/x-icon"})</script></head><body><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6CBMJD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><div id="agent-splash-screen" class="loading"><div class="hero"><div class="logo-container"><svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-blur"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="rgba(0,171,68,0.1)"/></svg> <svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="#DDFFEB"/></svg></div><div class="headings"><h1 class="title">Netdata Alert Notifications</h1><div class="flex-center flex-column" id="main-message">Trying to find a Netdata Agent for this alert...</div><table id="mynodes"></table></div></div></div><script>let searchParams = new URLSearchParams(location.search)
+      loadStyle("v2/favicon.ico", {rel: "icon", type: "image/x-icon"})</script></head><body><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6CBMJD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><div id="agent-splash-screen" class="loading"><div class="hero"><div class="logo-container"><svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-blur"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="rgba(0,171,68,0.1)"/></svg> <svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="#DDFFEB"/></svg></div><div class="headings"><h1 class="title">Netdata 告警通知</h1><div class="flex-center flex-column" id="main-message">正在查找此告警对应的 Netdata Agent...</div><table id="mynodes"></table></div></div></div><script>let searchParams = new URLSearchParams(location.search)
         let mg = searchParams.get("agent_machine_guid")
         let tr_i = searchParams.get("transition_id")
         let token = location.hash.substring(1)
@@ -108,7 +108,7 @@
 
                     let cell2 = document.createElement("td");
                     cell2.id = urlToId("_" + url + urlMg);
-                    cell2.textContent = "checking...";
+                    cell2.textContent = "检查中...";
                     row.appendChild(cell2);
 
                     table.appendChild(row);
@@ -120,11 +120,11 @@
 
                       let cellStatus = document.getElementById(urlToId("_" + url + urlMg));
                       if (event.data.isSame) {
-                        cell2.textContent = "OK";
+                        cell2.textContent = "正常";
                       } else if (event.data.hasError) {
-                        cell2.textContent = "can't connect";
+                        cell2.textContent = "无法连接";
                       } else {
-                        cell2.textContent = "wrong node";
+                        cell2.textContent = "节点不匹配";
                       }
                     });
 
@@ -134,19 +134,19 @@
                       if (cell2.textContent !== "checking...") {
                         return;
                       }
-                      cell2.textContent = "can't connect";
+                      cell2.textContent = "无法连接";
                     }, 5000)
                   })
                   let el = document.getElementById('agent-splash-screen');
                   el.classList.add("table");
-                  document.getElementById('main-message').textContent = "Select a URL to see details about this alert:"
+                  document.getElementById('main-message').textContent = "请选择一个 URL 查看此告警的详细信息："
                 } else {
                   let el = document.getElementById('main-message');
-                  el.innerHTML = "<p>Can't find any Netdata Agent for this alert.</p><small>Netdata learns Agent URLs when you view them and associates them with web browsers.<br/>Probably, you have never viewed the dashboard of the Netdata Agent that sent this notification, with the browser you use now.</small>"
+                  el.innerHTML = "<p>未能找到与此告警对应的 Netdata Agent。</p><small>Netdata 会在你访问 Agent 时记录其 URL，并将其与浏览器关联。<br/>你可能尚未使用当前浏览器访问发送此通知的 Netdata Agent 仪表盘。</small>"
                 }
               }).catch(function(e) {
                 let el = document.getElementById('main-message');
-                el.textContent = "Oops! Something went wrong."
+                el.textContent = "糟糕！出现了问题。"
               })
 
            })</script></body></html>
