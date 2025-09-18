@@ -1,0 +1,129 @@
+{
+  "index.html": {
+    "modification_count": 2,
+    "timestamps": [
+      "2025-09-17T19:30:11+00:00",
+      "2025-09-17T19:59:42+00:00"
+    ],
+    "completed": false
+  },
+  "registry-access.html": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "registry-alert-redirect.html": {
+    "modification_count": 1,
+    "timestamps": [
+      "2025-09-17T19:30:11+00:00"
+    ],
+    "completed": false
+  },
+  "registry-hello.html": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "static/splash.css": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/index.html": {
+    "modification_count": 2,
+    "timestamps": [
+      "2025-09-17T19:30:11+00:00",
+      "2025-09-17T19:59:42+00:00"
+    ],
+    "completed": false
+  },
+  "v3/agent.html": {
+    "modification_count": 1,
+    "timestamps": [
+      "2025-09-17T19:30:11+00:00"
+    ],
+    "completed": false
+  },
+  "v3/local-agent.html": {
+    "modification_count": 1,
+    "timestamps": [
+      "2025-09-17T19:30:11+00:00"
+    ],
+    "completed": false
+  },
+  "v3/registry-access.html": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/registry-alert-redirect.html": {
+    "modification_count": 1,
+    "timestamps": [
+      "2025-09-17T19:30:11+00:00"
+    ],
+    "completed": false
+  },
+  "v3/registry-hello.html": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/bundlesManifest.7.json": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/allFiles.7.json": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/allFiles.7.63.4.json": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/app.0a2af3a43dc4ffb52721.js": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/netdata.ui.b319faf863830b139779.js": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/netdata.charts.5a401d7c8c08f46694c5.js": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/runtime.8bf3b8e0aa54ab87f842.js": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/npm.react.dom.a255a2c925cb80880707.js": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/3447.234392b0e1462d9c2a16.js": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "v3/static/splash.css": {
+    "modification_count": 0,
+    "timestamps": [],
+    "completed": false
+  },
+  "static/i18n/netdata-dashboard-zh.js": {
+    "modification_count": 2,
+    "timestamps": [
+      "2025-09-17T19:59:42+00:00",
+      "2025-09-17T20:31:32.672837+00:00"
+    ],
+    "completed": false
+  }
+}

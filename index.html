@@ -72,7 +72,7 @@
         const message = roomsSelector.querySelector(".selected-items");
         const selectedRoomNames = getSelectedRooms(state).map(({ name }) => name).join(", ");
         if (message) {
-          message.innerText = roomsLoading ? "Loading rooms..." : (selectedRoomNames || "Select room");
+          message.innerText = roomsLoading ? "正在加载房间..." : (selectedRoomNames || "选择房间");
         }
       }
 
@@ -105,7 +105,7 @@
       btnNext.disabled = !selectedSpaceIds.length;
       btnClaim.style.display = step == 2 ? "initial" : "none";
       btnClaim.disabled = !selectedRoomIds.length || !privateKey || !claimingTokenExists || claimingTokenLoading || claimingAgentLoading;
-      btnClaim.textContent = claimingAgentLoading ? "Claiming..." : "Claim";
+      btnClaim.textContent = claimingAgentLoading ? "认领中..." : "认领";
 
       return Promise.resolve();
     }
@@ -194,6 +194,21 @@
       return window.location.origin + window.location.pathname.replace(pathsRegex, "")
     }
 
+    (function loadDashboardLocale() {
+      try {
+        const existing = document.querySelector('script[data-netdata-i18n="zh-CN"]');
+        if (existing) return;
+        const base = getBasename().replace(/\/$/, "");
+        const script = document.createElement("script");
+        script.defer = true;
+        script.src = `${base}/static/i18n/netdata-dashboard-zh.js`;
+        script.dataset.netdataI18n = "zh-CN";
+        document.head.appendChild(script);
+      } catch (error) {
+        console.warn("[netdata-i18n] preload failed", error);
+      }
+    })();
+
     let goToOld = function(path) {
       let goToUrl = getBasename() + path;
       if (path !== "/v3") {
@@ -212,14 +227,14 @@
       cloudUrl: "https://app.netdata.cloud",
       demoSlug: "netdata-demo",
       demoFavourites: {"postgresql":["Applications-0_Postgres-1"],"redis":["Applications-0_Redis-1"],"dns-query":["Applications-0_CoreDNS-1"],"http-endpoints":["Applications-0_HTTP_Checks-1"],"nginx":["Applications-0_web_log-1","Applications-0_Nginx-1"],"apache":["Applications-0_Apache-1"],"host-reachability":["Synthetic_Checks-0"],"cassandra":["Applications-0_Cassandra-1"],"coredns":["Applications-0_CoreDNS-1"],"logind":["Applications-0_systemd_LoginD-1"],"iis":["Applications-0_MS_IIS-1"],"active-directory":["Applications-0_MS_Active_Directory-1"],"windows":["Applications-0_Windows-1","Applications-0_MS_Active_Directory-1","Applications-0_MS_IIS-1","Applications-0_MS_SQL-1","Applications-0_MS_Exchange-1","Applications-0__NET_Framework-1"],"docker":["Containers___VMs-0"],"ups":["Hardware___Sensors-0_NUT_UPS-1"],"ibm":["Applications-0_IBM_WebSphere_PMI-1","Applications-0_IBM_WebSphere_MP-1","Applications-0_IBM_DB2-1","Applications-0_IBM_i-1"]},
-      webpackPublicPath: "https://app.netdata.cloud" || (getBasename() + "/v3"),
+      webpackPublicPath: "" || (getBasename() + "/v3"),
       agentApiUrl: searchParams.get("agent") || getBasename(),
       posthogToken: "phc_hnhlqe6D2Q4IcQNrFItaqdXJAxQ8RcHkPAFAp74pubv",
       version: "7.63.4",
-      tracking: !false,
+      tracking: !true,
       cookieDomain: ".netdata.cloud",
       onprem: false,
-      isLocal: false,
+      isLocal: true,
       nodeEnv: "production"
     }
 
@@ -242,10 +257,10 @@
         if (parsedUrl.origin === window.location.origin) {
           window.location.href = parsedUrl.href
         } else {
-          console.error("Blocked potentially unsafe redirect to: ", decodedUrl)
+          console.error("已拦截可能不安全的重定向目标：", decodedUrl)
         }
       } catch (error) {
-        console.error("Invalid URL detected: ", error.message)
+        console.error("检测到无效的 URL：", error.message)
       }
     }</script><style>body.netdata-splash {
       height: 100%;
@@ -1198,7 +1213,7 @@
     }
 
     body.netdata-splash .disk-max .key-value span:nth-child(2):before {
-      content: "Disk Size";
+      content: "磁盘大小";
     }
 
     body.netdata-splash .disk-used .key-value span:nth-child(2):before {
@@ -1701,7 +1716,7 @@
       resizeCanvas(canvas1, context1);
 
       window.addEventListener("resize", () => resizeCanvas(canvas1, context1));
-    }</script></head><body class="loading netdata-splash"><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6CBMJD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><div id="app" class="container grid"><div class="frame frame-left col-span-7 grid light-beam relative"><div class="head-summary absolute index-10"><div class="server"><div class="no-title" id="server"></div><div class="no-title" id="package"></div></div><div class="availability h-auto module"><div class="title">Cloud status</div><div class="no-key" id="cloud_status"></div></div></div><div class="col-span-12 row-span-11"><div id="sphereContainer"><div id="loadingMessage" class="loading-message">Loading...</div><div class="hide-title absolute-center sphere-stats-container"><div class="metrics-container"><div class="collected-metrics" id="collectedMetrics"></div><div class="node-info-container"><div class="title">NODES</div><div class="node-info" id="nodes_streaming"></div></div></div><div class="system-container data-tab data-tab-container" data-tab="2"><div class="system grid-columns-10 md-grid-columns-12"><div class="flex-col col-span-5 md-col-span-6"><div class="section-title">Kernel</div><div class="grid-columns-10"><div class="h-auto module col-span-5" id="kernel"></div><div class="h-auto module col-span-5" id="kernelVersion"></div></div></div><div class="flex-col col-span-5 md-col-span-6"><div class="section-title">OS</div><div class="grid-columns-10"><div id="os" class="h-auto module col-span-5"></div><div class="h-auto module col-span-5" id="id"></div></div></div><div class="hardware module-section col-span-10 md-col-span-12"><div class="section-title">Hardware</div><div class="grid-columns-10 md-grid-columns-12"><div class="module h-auto col-span-2 md-col-span-4" id="cpuCores"></div><div class="module h-auto col-span-2 md-col-span-4" id="cpuFrequency"></div><div class="module h-auto col-span-2 md-col-span-4" id="ram"></div><div class="module h-auto col-span-2 md-col-span-4" id="disk"></div><div class="module h-auto col-span-2 md-col-span-4" id="cpuArchitecture"></div><div class="module h-auto col-span-2 md-col-span-4" id="virtualization"></div></div></div></div></div><div class="data-tab data-tab-container" data-tab="1"><div class="db-metrics-container"><div id="tiers-container" class="db-metrics-blocks module"><table id="tiers-table"><thead><tr><th rowspan="2"><span data-tooltip="A database layer that stores metrics at a specific resolution.">Tier</span></th><th rowspan="2">Resolution</th><th colspan="2" class="section-start">Stored</th><th colspan="3" class="section-start">Retention</th><th colspan="2" class="section-start">Disk</th></tr><tr><th class="section-start">Metrics</th><th><span data-tooltip="The total number of measurements stored in the database across all metrics. Each sample represents a recorded value for a specific metric at a given time.">Samples</span></th><th class="section-start">Current</th><th><span data-tooltip="The maximum time data can be kept, based on the configured time and disk space limits.">Effective</span></th><th>Configured</th><th class="section-start">Used</th><th>Configured</th></tr></thead><tbody><tr id="tiers-table-data-placeholder"></tr></tbody></table></div></div></div><div class="data-tab data-tab-container" data-tab="3"><div class="modules-container grid"><div class="module col-span-4"><div class="module-header"><div class="section-image"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5299 4.47019C16.2399 4.18019 15.7599 4.18019 15.4699 4.47019L13.5299 6.41019L11.5899 4.47019L13.5299 2.53019C13.8199 2.24019 13.8199 1.76019 13.5299 1.47019C13.2399 1.18019 12.7599 1.18019 12.4699 1.47019L10.5299 3.41019L8.99994 1.88019L5.74994 5.13019C4.93994 5.93019 4.49994 7.01019 4.49994 8.15019V8.38019L3.72994 9.15019C2.53994 10.3302 2.45994 12.2002 3.43994 13.5002L1.96994 14.9702C1.67994 15.2602 1.67994 15.7402 1.96994 16.0302C2.11994 16.1802 2.30994 16.2502 2.49994 16.2502C2.68994 16.2502 2.87994 16.1802 3.02994 16.0302L4.49994 14.5602C5.06994 15.0002 5.76994 15.2402 6.49994 15.2402C7.38994 15.2402 8.21994 14.8902 8.84994 14.2702L9.61994 13.5002H9.84994C10.9899 13.5002 12.0599 13.0602 12.8699 12.2502L16.1199 9.00019L14.5899 7.47019L16.5299 5.53019C16.8199 5.24019 16.8199 4.76019 16.5299 4.47019ZM11.8099 11.1902C11.2899 11.7102 10.5899 12.0002 9.84994 12.0002H8.99994L7.78994 13.2102C7.42994 13.5702 6.96994 13.7402 6.49994 13.7402C6.02994 13.7402 5.56994 13.5602 5.20994 13.2102L4.78994 12.7902C4.07994 12.0802 4.07994 10.9202 4.78994 10.2102L5.46994 9.53019L6.40994 10.4702C6.99994 11.0602 7.94994 11.0602 8.52994 10.4702L6.01994 7.96019C6.06994 7.30019 6.33994 6.67019 6.80994 6.19019L8.99994 4.00019L13.9999 9.00019L11.8099 11.1902Z" fill="var(--text)"/></svg></div><span class="section-title">Plugins</span></div><div class="module-content" id="plugins"></div></div><div class="module col-span-4"><div class="module-header"><div class="section-image"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 18C7.55 18 8 17.55 8 17C8 16.45 7.55 16 7 16C6.45 16 6 16.45 6 17C6 17.55 6.45 18 7 18ZM14 17.79C14.28 17.51 14.28 17.07 14 16.79C13.72 16.51 13.28 16.51 13 16.79C12.72 17.07 12.72 17.51 13 17.79C13.28 18.07 13.72 18.07 14 17.79ZM17 8V4H12V2H2V22H22V8H17ZM10 20H4V4H10V20ZM15 20H12V6H15V20ZM20 20H17V10H20V20ZM19 17.79C19.28 17.51 19.28 17.07 19 16.79C18.72 16.51 18.28 16.51 18 16.79C17.72 17.07 17.72 17.51 18 17.79C18.28 18.07 18.72 18.07 19 17.79Z" fill="var(--text)"/></svg></div><span class="section-title">Libraries</span></div><div class="module-content" id="libs"></div></div><div class="module col-span-4"><div class="module-header"><div class="section-image"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 16.0002H5V14.5002H4V16.0002ZM2 16.0002H3V14.5002H2V16.0002ZM15.28 6.97019L10.25 1.94019L5.22 6.97019C4.927 7.26319 4.927 7.73819 5.22 8.03119C5.513 8.32419 5.988 8.32419 6.281 8.03119L9.5 4.81119V11.8392C9.5 13.3062 8.306 14.5002 6.838 14.5002H6V16.0002H6.838C9.136 16.0002 11 14.1372 11 11.8382V4.81119L14.22 8.03119C14.366 8.17719 14.558 8.25119 14.75 8.25119C14.942 8.25119 15.134 8.17819 15.28 8.03119C15.573 7.73719 15.573 7.26319 15.28 6.97019Z" fill="var(--text)"/></svg></div><span class="section-title">Exporters</span></div><div class="module-content" id="exporters"></div></div></div></div><div class="data-tab data-tab-container" data-tab="4"><div class="module data-tab-table" id="directories"></div></div></div></div></div><div class="relative row-span-1 col-span-12 full-h"><div class="license-link"><a href="https://app.netdata.cloud/LICENSE.txt" target="_blank">Netdata UI License</a></div><div class="tabs full-h"><button type="button" name="button" class="btn-tab tab active" data-tab="1"><div class="tab-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 10C14.153 10 16.5 7.927 16.5 6C16.5 4.073 14.153 2 9 2C3.847 2 1.5 4.073 1.5 6C1.5 7.927 3.847 10 9 10ZM9 3.5C12.313 3.5 15 4.619 15 6C15 7.381 12.313 8.5 9 8.5C5.687 8.5 3 7.381 3 6C3 4.619 5.687 3.5 9 3.5ZM14.566 12.931C13.68 13.85 11.523 14.5 9 14.5C6.477 14.5 4.32 13.85 3.434 12.931C2.639 12.547 2.01 12.081 1.545 11.563C1.518 11.708 1.5 11.854 1.5 12C1.5 13.927 3.847 16 9 16C14.153 16 16.5 13.927 16.5 12C16.5 11.854 16.482 11.708 16.455 11.562C15.99 12.081 15.361 12.546 14.566 12.931ZM14.566 9.931C13.68 10.85 11.523 11.5 9 11.5C6.477 11.5 4.32 10.85 3.434 9.931C2.639 9.547 2.01 9.081 1.545 8.563C1.518 8.708 1.5 8.854 1.5 9C1.5 10.927 3.847 13 9 13C14.153 13 16.5 10.927 16.5 9C16.5 8.854 16.482 8.708 16.455 8.562C15.99 9.081 15.361 9.546 14.566 9.931Z"/></svg></div>Database</button> <button type="button" name="button" class="btn-tab tab" data-tab="2"><div class="tab-icon"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.3125 18.75H19.6875C19.1697 18.75 18.75 19.1697 18.75 19.6875V40.3125C18.75 40.8303 19.1697 41.25 19.6875 41.25H40.3125C40.8303 41.25 41.25 40.8303 41.25 40.3125V19.6875C41.25 19.1697 40.8303 18.75 40.3125 18.75Z"/><path d="M54.375 22.5C54.8723 22.5 55.3492 22.3025 55.7008 21.9508C56.0525 21.5992 56.25 21.1223 56.25 20.625C56.25 20.1277 56.0525 19.6508 55.7008 19.2992C55.3492 18.9475 54.8723 18.75 54.375 18.75H52.5V15C52.4978 13.0115 51.707 11.1051 50.3009 9.6991C48.8949 8.29305 46.9885 7.50217 45 7.5H41.25V5.625C41.25 5.12772 41.0525 4.65081 40.7008 4.29917C40.3492 3.94754 39.8723 3.75 39.375 3.75C38.8777 3.75 38.4008 3.94754 38.0492 4.29917C37.6975 4.65081 37.5 5.12772 37.5 5.625V7.5H31.875V5.625C31.875 5.12772 31.6775 4.65081 31.3258 4.29917C30.9742 3.94754 30.4973 3.75 30 3.75C29.5027 3.75 29.0258 3.94754 28.6742 4.29917C28.3225 4.65081 28.125 5.12772 28.125 5.625V7.5H22.5V5.625C22.5 5.12772 22.3025 4.65081 21.9508 4.29917C21.5992 3.94754 21.1223 3.75 20.625 3.75C20.1277 3.75 19.6508 3.94754 19.2992 4.29917C18.9475 4.65081 18.75 5.12772 18.75 5.625V7.5H15C13.0115 7.50217 11.1051 8.29305 9.6991 9.6991C8.29305 11.1051 7.50217 13.0115 7.5 15V18.75H5.625C5.12772 18.75 4.65081 18.9475 4.29917 19.2992C3.94754 19.6508 3.75 20.1277 3.75 20.625C3.75 21.1223 3.94754 21.5992 4.29917 21.9508C4.65081 22.3025 5.12772 22.5 5.625 22.5H7.5V28.125H5.625C5.12772 28.125 4.65081 28.3225 4.29917 28.6742C3.94754 29.0258 3.75 29.5027 3.75 30C3.75 30.4973 3.94754 30.9742 4.29917 31.3258C4.65081 31.6775 5.12772 31.875 5.625 31.875H7.5V37.5H5.625C5.12772 37.5 4.65081 37.6975 4.29917 38.0492C3.94754 38.4008 3.75 38.8777 3.75 39.375C3.75 39.8723 3.94754 40.3492 4.29917 40.7008C4.65081 41.0525 5.12772 41.25 5.625 41.25H7.5V45C7.50217 46.9885 8.29305 48.8949 9.6991 50.3009C11.1051 51.707 13.0115 52.4978 15 52.5H18.75V54.375C18.75 54.8723 18.9475 55.3492 19.2992 55.7008C19.6508 56.0525 20.1277 56.25 20.625 56.25C21.1223 56.25 21.5992 56.0525 21.9508 55.7008C22.3025 55.3492 22.5 54.8723 22.5 54.375V52.5H28.125V54.375C28.125 54.8723 28.3225 55.3492 28.6742 55.7008C29.0258 56.0525 29.5027 56.25 30 56.25C30.4973 56.25 30.9742 56.0525 31.3258 55.7008C31.6775 55.3492 31.875 54.8723 31.875 54.375V52.5H37.5V54.375C37.5 54.8723 37.6975 55.3492 38.0492 55.7008C38.4008 56.0525 38.8777 56.25 39.375 56.25C39.8723 56.25 40.3492 56.0525 40.7008 55.7008C41.0525 55.3492 41.25 54.8723 41.25 54.375V52.5H45C46.9885 52.4978 48.8949 51.707 50.3009 50.3009C51.707 48.8949 52.4978 46.9885 52.5 45V41.25H54.375C54.8723 41.25 55.3492 41.0525 55.7008 40.7008C56.0525 40.3492 56.25 39.8723 56.25 39.375C56.25 38.8777 56.0525 38.4008 55.7008 38.0492C55.3492 37.6975 54.8723 37.5 54.375 37.5H52.5V31.875H54.375C54.8723 31.875 55.3492 31.6775 55.7008 31.3258C56.0525 30.9742 56.25 30.4973 56.25 30C56.25 29.5027 56.0525 29.0258 55.7008 28.6742C55.3492 28.3225 54.8723 28.125 54.375 28.125H52.5V22.5H54.375ZM45 41.25C45 42.2446 44.6049 43.1984 43.9016 43.9016C43.1984 44.6049 42.2446 45 41.25 45H18.75C17.7554 45 16.8016 44.6049 16.0984 43.9016C15.3951 43.1984 15 42.2446 15 41.25V18.75C15 17.7554 15.3951 16.8016 16.0984 16.0984C16.8016 15.3951 17.7554 15 18.75 15H41.25C42.2446 15 43.1984 15.3951 43.9016 16.0984C44.6049 16.8016 45 17.7554 45 18.75V41.25Z"/></svg></div>System</button> <button type="button" name="button" class="btn-tab tab" data-tab="3"><div class="tab-icon"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59.7937 16.4062C59.7164 16.2322 59.6084 16.0734 59.475 15.9375C59.3495 15.8165 59.2112 15.7097 59.0625 15.6187L30.9 0.224957C30.615 0.0603916 30.2916 -0.0262451 29.9625 -0.0262451C29.6334 -0.0262451 29.31 0.0603916 29.025 0.224957L1.06875 15.525C1.06875 15.525 1.06875 15.6187 0.91875 15.6375C0.762779 15.7334 0.618116 15.8466 0.4875 15.975C0.433211 16.047 0.383128 16.1221 0.3375 16.2C0.244093 16.3333 0.168457 16.4783 0.1125 16.6312C0.1125 16.6312 0.1125 16.6312 0.1125 16.7437C0.103788 16.8435 0.103788 16.9439 0.1125 17.0437C0.1125 17.0437 0.1125 17.1562 0.1125 17.2125V42.7687C0.0613239 42.8827 0.0235706 43.0023 0 43.125L0 43.3875C0.142582 43.8604 0.466002 44.2579 0.9 44.4937L29.025 59.8312H29.1375H29.2875C29.5116 59.9337 29.7537 59.9911 30 60C30.2245 59.9926 30.4462 59.9482 30.6563 59.8687H30.7875H30.9L59.025 44.5312C59.3209 44.3693 59.5676 44.1306 59.7392 43.8402C59.9108 43.5498 60.0009 43.2185 60 42.8812V17.2125C59.9937 16.9939 59.9493 16.7782 59.8688 16.575C59.8516 16.5155 59.8264 16.4588 59.7937 16.4062ZM28.125 54.975L3.75 41.6625V20.3812L28.125 33.75V54.975ZM30 30.4125L5.79375 17.2875L30 4.01246L54.2062 17.1375L30 30.4125ZM56.25 41.6625L31.875 54.975V33.75L56.25 20.4562V41.6625Z"/></svg></div>Modules</button> <button type="button" name="button" class="btn-tab tab" data-tab="4"><div class="tab-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 10.5V5.5H10V7.25H5.75V6.5H8V1.5H2V6.5H4.25V14.75H10V16.5H16V11.5H10V13.25H5.75V8.75H10V10.5H16ZM11.5 7H14.5V9H11.5V7ZM11.5 13H14.5V15H11.5V13ZM3.5 5V3H6.5V5H3.5Z"/></svg></div>Directories</button></div></div></div><div class="frame relative col-span-5 frame-right"><canvas id="monitorGrid"></canvas><div id="splashMessageContainer" class="splash-message"><svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="#FCFFFD"/></svg><h1 class="text-center">Welcome to Netdata</h1><p id="msgSignIn">Please sign-in to continue</p><a id="btnSignIn" href="javascript:loadDashboard(true);" class="button button-primary">Sign-in</a><div class="tagline skip-link"><a class="opt-out-link" href="javascript:loadDashboard();">Skip and use the dashboard anonymously.</a> <span class="no-anonymous-access"></span></div></div><div id="claimingContentsContainer" class="claim-message" style="display:none;"><div class="welcome"><svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="#FCFFFD"/></svg><h1 class="text-center">Welcome to Netdata</h1><span>Please connect your agent to continue.</span></div><div class="connection-modal"><div id="connectionStep-1"><div class="connection-step"><span class="text-small">Please select the space you want this agent to join:</span> <span class="loader">Loading spaces...</span><ul id="spacesList" class="list-options"></ul></div></div><div id="connectionStep-2" style="display:none;"><div class="connection-step"><div class="dropdown-custom" data-target="claimMessage"><div class="dropdown-custom-input flex space-between align-center"><span class="text-small">Select room(s)</span><button class="text-small button button-ghost clear-button">Clear</button></div><div id="roomsSelector" class="dropdown"><div class="dropdown-toggle"><span id="selectedItems" class="selected-items">Select room</span> <span>▼</span></div><div id="roomsSelectorOptionsContainer" class="checkbox-container"></div></div></div><div id="claimMessage" class="selected-message"></div><div class="">Please run the command below in your terminal:</div><code id="claimCommand"></code><div class="">and paste the generated private key in the field below:</div><input id="claimingPrivateKey" name="claimingPrivateKey" value="" placeholder="Private Key"/></div><div id="claimTip" class="text-padding text-small">Tip: If the command doesn’t work out-of-the-box, locate the {keyFilename} file, open it in your favourite text editor, and copy it to your clipboard.</div><div id="claimErrorMessage" class="text-padding error" style="display:none;"></div></div><div class="modal-footer flex-col"><div class="flex space-between"><button id="btnConnectionStepPrev" class="button button-ghost">&#8592; Back</button> <button id="btnConnectionStepNext" class="button button-primary">Next</button> <button id="btnClaim" class="button button-primary">Claim</button></div><div class="skip-link"><a class="signout-link" href="javascript:signout()">Sign out to switch user</a></div></div></div></div></div><div id="tooltip"></div></div></body><script>const initPrimaryButtonHover = () => {
+    }</script></head><body class="loading netdata-splash"><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6CBMJD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><div id="app" class="container grid"><div class="frame frame-left col-span-7 grid light-beam relative"><div class="head-summary absolute index-10"><div class="server"><div class="no-title" id="server"></div><div class="no-title" id="package"></div></div><div class="availability h-auto module"><div class="title">云状态</div><div class="no-key" id="cloud_status"></div></div></div><div class="col-span-12 row-span-11"><div id="sphereContainer"><div id="loadingMessage" class="loading-message">加载中...</div><div class="hide-title absolute-center sphere-stats-container"><div class="metrics-container"><div class="collected-metrics" id="collectedMetrics"></div><div class="node-info-container"><div class="title">节点</div><div class="node-info" id="nodes_streaming"></div></div></div><div class="system-container data-tab data-tab-container" data-tab="2"><div class="system grid-columns-10 md-grid-columns-12"><div class="flex-col col-span-5 md-col-span-6"><div class="section-title">内核</div><div class="grid-columns-10"><div class="h-auto module col-span-5" id="kernel"></div><div class="h-auto module col-span-5" id="kernelVersion"></div></div></div><div class="flex-col col-span-5 md-col-span-6"><div class="section-title">操作系统</div><div class="grid-columns-10"><div id="os" class="h-auto module col-span-5"></div><div class="h-auto module col-span-5" id="id"></div></div></div><div class="hardware module-section col-span-10 md-col-span-12"><div class="section-title">硬件</div><div class="grid-columns-10 md-grid-columns-12"><div class="module h-auto col-span-2 md-col-span-4" id="cpuCores"></div><div class="module h-auto col-span-2 md-col-span-4" id="cpuFrequency"></div><div class="module h-auto col-span-2 md-col-span-4" id="ram"></div><div class="module h-auto col-span-2 md-col-span-4" id="disk"></div><div class="module h-auto col-span-2 md-col-span-4" id="cpuArchitecture"></div><div class="module h-auto col-span-2 md-col-span-4" id="virtualization"></div></div></div></div></div><div class="data-tab data-tab-container" data-tab="1"><div class="db-metrics-container"><div id="tiers-container" class="db-metrics-blocks module"><table id="tiers-table"><thead><tr><th rowspan="2"><span data-tooltip="A database layer that stores metrics at a specific resolution.">层级</span></th><th rowspan="2">数据分辨率</th><th colspan="2" class="section-start">存储</th><th colspan="3" class="section-start">保留期</th><th colspan="2" class="section-start">磁盘</th></tr><tr><th class="section-start">指标</th><th><span data-tooltip="The total number of measurements stored in the database across all metrics. Each sample represents a recorded value for a specific metric at a given time.">样本</span></th><th class="section-start">当前</th><th><span data-tooltip="The maximum time data can be kept, based on the configured time and disk space limits.">有效</span></th><th>已配置</th><th class="section-start">已使用</th><th>已配置</th></tr></thead><tbody><tr id="tiers-table-data-placeholder"></tr></tbody></table></div></div></div><div class="data-tab data-tab-container" data-tab="3"><div class="modules-container grid"><div class="module col-span-4"><div class="module-header"><div class="section-image"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5299 4.47019C16.2399 4.18019 15.7599 4.18019 15.4699 4.47019L13.5299 6.41019L11.5899 4.47019L13.5299 2.53019C13.8199 2.24019 13.8199 1.76019 13.5299 1.47019C13.2399 1.18019 12.7599 1.18019 12.4699 1.47019L10.5299 3.41019L8.99994 1.88019L5.74994 5.13019C4.93994 5.93019 4.49994 7.01019 4.49994 8.15019V8.38019L3.72994 9.15019C2.53994 10.3302 2.45994 12.2002 3.43994 13.5002L1.96994 14.9702C1.67994 15.2602 1.67994 15.7402 1.96994 16.0302C2.11994 16.1802 2.30994 16.2502 2.49994 16.2502C2.68994 16.2502 2.87994 16.1802 3.02994 16.0302L4.49994 14.5602C5.06994 15.0002 5.76994 15.2402 6.49994 15.2402C7.38994 15.2402 8.21994 14.8902 8.84994 14.2702L9.61994 13.5002H9.84994C10.9899 13.5002 12.0599 13.0602 12.8699 12.2502L16.1199 9.00019L14.5899 7.47019L16.5299 5.53019C16.8199 5.24019 16.8199 4.76019 16.5299 4.47019ZM11.8099 11.1902C11.2899 11.7102 10.5899 12.0002 9.84994 12.0002H8.99994L7.78994 13.2102C7.42994 13.5702 6.96994 13.7402 6.49994 13.7402C6.02994 13.7402 5.56994 13.5602 5.20994 13.2102L4.78994 12.7902C4.07994 12.0802 4.07994 10.9202 4.78994 10.2102L5.46994 9.53019L6.40994 10.4702C6.99994 11.0602 7.94994 11.0602 8.52994 10.4702L6.01994 7.96019C6.06994 7.30019 6.33994 6.67019 6.80994 6.19019L8.99994 4.00019L13.9999 9.00019L11.8099 11.1902Z" fill="var(--text)"/></svg></div><span class="section-title">插件</span></div><div class="module-content" id="plugins"></div></div><div class="module col-span-4"><div class="module-header"><div class="section-image"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 18C7.55 18 8 17.55 8 17C8 16.45 7.55 16 7 16C6.45 16 6 16.45 6 17C6 17.55 6.45 18 7 18ZM14 17.79C14.28 17.51 14.28 17.07 14 16.79C13.72 16.51 13.28 16.51 13 16.79C12.72 17.07 12.72 17.51 13 17.79C13.28 18.07 13.72 18.07 14 17.79ZM17 8V4H12V2H2V22H22V8H17ZM10 20H4V4H10V20ZM15 20H12V6H15V20ZM20 20H17V10H20V20ZM19 17.79C19.28 17.51 19.28 17.07 19 16.79C18.72 16.51 18.28 16.51 18 16.79C17.72 17.07 17.72 17.51 18 17.79C18.28 18.07 18.72 18.07 19 17.79Z" fill="var(--text)"/></svg></div><span class="section-title">库</span></div><div class="module-content" id="libs"></div></div><div class="module col-span-4"><div class="module-header"><div class="section-image"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 16.0002H5V14.5002H4V16.0002ZM2 16.0002H3V14.5002H2V16.0002ZM15.28 6.97019L10.25 1.94019L5.22 6.97019C4.927 7.26319 4.927 7.73819 5.22 8.03119C5.513 8.32419 5.988 8.32419 6.281 8.03119L9.5 4.81119V11.8392C9.5 13.3062 8.306 14.5002 6.838 14.5002H6V16.0002H6.838C9.136 16.0002 11 14.1372 11 11.8382V4.81119L14.22 8.03119C14.366 8.17719 14.558 8.25119 14.75 8.25119C14.942 8.25119 15.134 8.17819 15.28 8.03119C15.573 7.73719 15.573 7.26319 15.28 6.97019Z" fill="var(--text)"/></svg></div><span class="section-title">导出器</span></div><div class="module-content" id="exporters"></div></div></div></div><div class="data-tab data-tab-container" data-tab="4"><div class="module data-tab-table" id="directories"></div></div></div></div></div><div class="relative row-span-1 col-span-12 full-h"><div class="license-link"><a href="https://app.netdata.cloud/LICENSE.txt" target="_blank">Netdata UI 许可证</a></div><div class="tabs full-h"><button type="button" name="button" class="btn-tab tab active" data-tab="1"><div class="tab-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 10C14.153 10 16.5 7.927 16.5 6C16.5 4.073 14.153 2 9 2C3.847 2 1.5 4.073 1.5 6C1.5 7.927 3.847 10 9 10ZM9 3.5C12.313 3.5 15 4.619 15 6C15 7.381 12.313 8.5 9 8.5C5.687 8.5 3 7.381 3 6C3 4.619 5.687 3.5 9 3.5ZM14.566 12.931C13.68 13.85 11.523 14.5 9 14.5C6.477 14.5 4.32 13.85 3.434 12.931C2.639 12.547 2.01 12.081 1.545 11.563C1.518 11.708 1.5 11.854 1.5 12C1.5 13.927 3.847 16 9 16C14.153 16 16.5 13.927 16.5 12C16.5 11.854 16.482 11.708 16.455 11.562C15.99 12.081 15.361 12.546 14.566 12.931ZM14.566 9.931C13.68 10.85 11.523 11.5 9 11.5C6.477 11.5 4.32 10.85 3.434 9.931C2.639 9.547 2.01 9.081 1.545 8.563C1.518 8.708 1.5 8.854 1.5 9C1.5 10.927 3.847 13 9 13C14.153 13 16.5 10.927 16.5 9C16.5 8.854 16.482 8.708 16.455 8.562C15.99 9.081 15.361 9.546 14.566 9.931Z"/></svg></div>数据库</button> <button type="button" name="button" class="btn-tab tab" data-tab="2"><div class="tab-icon"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.3125 18.75H19.6875C19.1697 18.75 18.75 19.1697 18.75 19.6875V40.3125C18.75 40.8303 19.1697 41.25 19.6875 41.25H40.3125C40.8303 41.25 41.25 40.8303 41.25 40.3125V19.6875C41.25 19.1697 40.8303 18.75 40.3125 18.75Z"/><path d="M54.375 22.5C54.8723 22.5 55.3492 22.3025 55.7008 21.9508C56.0525 21.5992 56.25 21.1223 56.25 20.625C56.25 20.1277 56.0525 19.6508 55.7008 19.2992C55.3492 18.9475 54.8723 18.75 54.375 18.75H52.5V15C52.4978 13.0115 51.707 11.1051 50.3009 9.6991C48.8949 8.29305 46.9885 7.50217 45 7.5H41.25V5.625C41.25 5.12772 41.0525 4.65081 40.7008 4.29917C40.3492 3.94754 39.8723 3.75 39.375 3.75C38.8777 3.75 38.4008 3.94754 38.0492 4.29917C37.6975 4.65081 37.5 5.12772 37.5 5.625V7.5H31.875V5.625C31.875 5.12772 31.6775 4.65081 31.3258 4.29917C30.9742 3.94754 30.4973 3.75 30 3.75C29.5027 3.75 29.0258 3.94754 28.6742 4.29917C28.3225 4.65081 28.125 5.12772 28.125 5.625V7.5H22.5V5.625C22.5 5.12772 22.3025 4.65081 21.9508 4.29917C21.5992 3.94754 21.1223 3.75 20.625 3.75C20.1277 3.75 19.6508 3.94754 19.2992 4.29917C18.9475 4.65081 18.75 5.12772 18.75 5.625V7.5H15C13.0115 7.50217 11.1051 8.29305 9.6991 9.6991C8.29305 11.1051 7.50217 13.0115 7.5 15V18.75H5.625C5.12772 18.75 4.65081 18.9475 4.29917 19.2992C3.94754 19.6508 3.75 20.1277 3.75 20.625C3.75 21.1223 3.94754 21.5992 4.29917 21.9508C4.65081 22.3025 5.12772 22.5 5.625 22.5H7.5V28.125H5.625C5.12772 28.125 4.65081 28.3225 4.29917 28.6742C3.94754 29.0258 3.75 29.5027 3.75 30C3.75 30.4973 3.94754 30.9742 4.29917 31.3258C4.65081 31.6775 5.12772 31.875 5.625 31.875H7.5V37.5H5.625C5.12772 37.5 4.65081 37.6975 4.29917 38.0492C3.94754 38.4008 3.75 38.8777 3.75 39.375C3.75 39.8723 3.94754 40.3492 4.29917 40.7008C4.65081 41.0525 5.12772 41.25 5.625 41.25H7.5V45C7.50217 46.9885 8.29305 48.8949 9.6991 50.3009C11.1051 51.707 13.0115 52.4978 15 52.5H18.75V54.375C18.75 54.8723 18.9475 55.3492 19.2992 55.7008C19.6508 56.0525 20.1277 56.25 20.625 56.25C21.1223 56.25 21.5992 56.0525 21.9508 55.7008C22.3025 55.3492 22.5 54.8723 22.5 54.375V52.5H28.125V54.375C28.125 54.8723 28.3225 55.3492 28.6742 55.7008C29.0258 56.0525 29.5027 56.25 30 56.25C30.4973 56.25 30.9742 56.0525 31.3258 55.7008C31.6775 55.3492 31.875 54.8723 31.875 54.375V52.5H37.5V54.375C37.5 54.8723 37.6975 55.3492 38.0492 55.7008C38.4008 56.0525 38.8777 56.25 39.375 56.25C39.8723 56.25 40.3492 56.0525 40.7008 55.7008C41.0525 55.3492 41.25 54.8723 41.25 54.375V52.5H45C46.9885 52.4978 48.8949 51.707 50.3009 50.3009C51.707 48.8949 52.4978 46.9885 52.5 45V41.25H54.375C54.8723 41.25 55.3492 41.0525 55.7008 40.7008C56.0525 40.3492 56.25 39.8723 56.25 39.375C56.25 38.8777 56.0525 38.4008 55.7008 38.0492C55.3492 37.6975 54.8723 37.5 54.375 37.5H52.5V31.875H54.375C54.8723 31.875 55.3492 31.6775 55.7008 31.3258C56.0525 30.9742 56.25 30.4973 56.25 30C56.25 29.5027 56.0525 29.0258 55.7008 28.6742C55.3492 28.3225 54.8723 28.125 54.375 28.125H52.5V22.5H54.375ZM45 41.25C45 42.2446 44.6049 43.1984 43.9016 43.9016C43.1984 44.6049 42.2446 45 41.25 45H18.75C17.7554 45 16.8016 44.6049 16.0984 43.9016C15.3951 43.1984 15 42.2446 15 41.25V18.75C15 17.7554 15.3951 16.8016 16.0984 16.0984C16.8016 15.3951 17.7554 15 18.75 15H41.25C42.2446 15 43.1984 15.3951 43.9016 16.0984C44.6049 16.8016 45 17.7554 45 18.75V41.25Z"/></svg></div>系统</button> <button type="button" name="button" class="btn-tab tab" data-tab="3"><div class="tab-icon"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59.7937 16.4062C59.7164 16.2322 59.6084 16.0734 59.475 15.9375C59.3495 15.8165 59.2112 15.7097 59.0625 15.6187L30.9 0.224957C30.615 0.0603916 30.2916 -0.0262451 29.9625 -0.0262451C29.6334 -0.0262451 29.31 0.0603916 29.025 0.224957L1.06875 15.525C1.06875 15.525 1.06875 15.6187 0.91875 15.6375C0.762779 15.7334 0.618116 15.8466 0.4875 15.975C0.433211 16.047 0.383128 16.1221 0.3375 16.2C0.244093 16.3333 0.168457 16.4783 0.1125 16.6312C0.1125 16.6312 0.1125 16.6312 0.1125 16.7437C0.103788 16.8435 0.103788 16.9439 0.1125 17.0437C0.1125 17.0437 0.1125 17.1562 0.1125 17.2125V42.7687C0.0613239 42.8827 0.0235706 43.0023 0 43.125L0 43.3875C0.142582 43.8604 0.466002 44.2579 0.9 44.4937L29.025 59.8312H29.1375H29.2875C29.5116 59.9337 29.7537 59.9911 30 60C30.2245 59.9926 30.4462 59.9482 30.6563 59.8687H30.7875H30.9L59.025 44.5312C59.3209 44.3693 59.5676 44.1306 59.7392 43.8402C59.9108 43.5498 60.0009 43.2185 60 42.8812V17.2125C59.9937 16.9939 59.9493 16.7782 59.8688 16.575C59.8516 16.5155 59.8264 16.4588 59.7937 16.4062ZM28.125 54.975L3.75 41.6625V20.3812L28.125 33.75V54.975ZM30 30.4125L5.79375 17.2875L30 4.01246L54.2062 17.1375L30 30.4125ZM56.25 41.6625L31.875 54.975V33.75L56.25 20.4562V41.6625Z"/></svg></div>模块</button> <button type="button" name="button" class="btn-tab tab" data-tab="4"><div class="tab-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 10.5V5.5H10V7.25H5.75V6.5H8V1.5H2V6.5H4.25V14.75H10V16.5H16V11.5H10V13.25H5.75V8.75H10V10.5H16ZM11.5 7H14.5V9H11.5V7ZM11.5 13H14.5V15H11.5V13ZM3.5 5V3H6.5V5H3.5Z"/></svg></div>目录</button></div></div></div><div class="frame relative col-span-5 frame-right"><canvas id="monitorGrid"></canvas><div id="splashMessageContainer" class="splash-message"><svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="#FCFFFD"/></svg><h1 class="text-center">欢迎使用 Netdata</h1><p id="msgSignIn">请先登录以继续</p><a id="btnSignIn" href="javascript:loadDashboard(true);" class="button button-primary">登录</a><div class="tagline skip-link"><a class="opt-out-link" href="javascript:loadDashboard();">跳过并匿名使用仪表盘。</a> <span class="no-anonymous-access"></span></div></div><div id="claimingContentsContainer" class="claim-message" style="display:none;"><div class="welcome"><svg width="133" height="105" viewBox="0 0 133 105" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo"><path fill-rule="evenodd" clip-rule="evenodd" d="M81.697 105H55.0693L0.5 0.5H77.9598C108.079 0.554913 132.484 24.7711 132.5 54.6451C132.452 82.485 109.73 105 81.697 105Z" fill="#FCFFFD"/></svg><h1 class="text-center">欢迎使用 Netdata</h1><span>请连接您的 Agent 以继续。</span></div><div class="connection-modal"><div id="connectionStep-1"><div class="connection-step"><span class="text-small">请选择要将此 Agent 加入的空间：</span> <span class="loader">正在加载空间...</span><ul id="spacesList" class="list-options"></ul></div></div><div id="connectionStep-2" style="display:none;"><div class="connection-step"><div class="dropdown-custom" data-target="claimMessage"><div class="dropdown-custom-input flex space-between align-center"><span class="text-small">选择房间</span><button class="text-small button button-ghost clear-button">清除</button></div><div id="roomsSelector" class="dropdown"><div class="dropdown-toggle"><span id="selectedItems" class="selected-items">选择房间</span> <span>▼</span></div><div id="roomsSelectorOptionsContainer" class="checkbox-container"></div></div></div><div id="claimMessage" class="selected-message"></div><div class="">请在终端中运行以下命令：</div><code id="claimCommand"></code><div class="">并将生成的私钥粘贴到下方输入框：</div><input id="claimingPrivateKey" name="claimingPrivateKey" value="" placeholder="Private Key"/></div><div id="claimTip" class="text-padding text-small">Tip: If the command doesn’t work out-of-the-box, locate the {keyFilename} file, open it in your favourite text editor, and copy it to your clipboard.</div><div id="claimErrorMessage" class="text-padding error" style="display:none;"></div></div><div class="modal-footer flex-col"><div class="flex space-between"><button id="btnConnectionStepPrev" class="button button-ghost">&#8592; 返回</button> <button id="btnConnectionStepNext" class="button button-primary">下一步</button> <button id="btnClaim" class="button button-primary">认领</button></div><div class="skip-link"><a class="signout-link" href="javascript:signout()">退出登录以切换用户</a></div></div></div></div></div><div id="tooltip"></div></div></body><script>const initPrimaryButtonHover = () => {
     const button = document.getElementById("btnSignIn");
     const canvas = document.getElementById("monitorGrid");
 
@@ -1746,7 +1761,7 @@
     return sessionStorage.getItem(key) || "";
   }
 
-  const defaultErrorMessage = "Something went wrong."
+  const defaultErrorMessage = "出现了问题。"
   const agentUri = window.location.origin + window.location.pathname.replace(pathsRegex, "");
   const telemetrySessionId = getSessionId();
   const ensureOneSlash = urlStr => urlStr.replace(/([^:]\/)\/+/g, "$1");
@@ -1939,7 +1954,7 @@
         return response.json()
       })
       .then(data => {
-        if (!data) return Promise.reject({ message: "No registry data available." })
+        if (!data) return Promise.reject({ message: "没有可用的注册表数据。" })
 
         let to = data.cloud_base_url.lastIndexOf('/');
         to = (to == -1 || to < data.cloud_base_url.length - 2) ? data.cloud_base_url.length : to;
@@ -1963,7 +1978,7 @@
         document.body.appendChild(iframe);
 
         setTimeout(function () {
-          document.title = data.hostname + ': Netdata Agent Console';
+          document.title = data.hostname + ': Netdata Agent 控制台';
           iframe.contentWindow.postMessage(["netdata-registry", window.envSettings.agentApiUrl, data], "*")
         }, 300);
 
@@ -1993,7 +2008,7 @@
 
   const cloudRequest = async (endpoint, {allowAnonymous = false, ...options} = {}) => {
     const cloudToken = localStorage.getItem(CLOUD_TOKEN_KEY)
-    if (!allowAnonymous && !cloudToken) return Promise.reject("No cloud token")
+    if (!allowAnonymous && !cloudToken) return Promise.reject("未找到 Cloud 令牌")
 
     options = { ...options, headers: { ...(options?.headers || {}), ...(!!cloudToken && {Authorization: `Bearer ${cloudToken}`}) } }
 
@@ -2091,9 +2106,9 @@
     }).catch((err) => {
       stopLoading()
 
-      let message = "Something went wrong. Please try again."
+      let message = "出现问题了。请重试。"
       if (err.data && err.data.state === "created") {
-        message = "The node is claimed and is syncing with Netdata Cloud. Please wait a few seconds and try again."
+        message = "该节点已被认领，正在与 Netdata Cloud 同步。请等待几秒后再试。"
       } else {
         message = (err && err.message) || message
       }
@@ -2130,7 +2145,7 @@
     if (anonymousAccessDeniedElems.length > 0) {
       for (let i = 0; i < anonymousAccessDeniedElems.length; i++) {
         if (anonymousAccessDeniedElems[i].textContent === "") {
-          anonymousAccessDeniedElems[i].innerHTML = bearerProtection ? "Anonymous access is not allowed. Bearer protection is enabled.<br />Please sign in to continue." : "Anonymous access to the dashboard of Windows nodes is not allowed.<br />Please sign in to continue.";
+          anonymousAccessDeniedElems[i].innerHTML = bearerProtection ? "不允许匿名访问。已启用 Bearer 保护。<br />请登录以继续。" : "不允许匿名访问 Windows 节点的仪表盘。<br />请登录以继续。";
         }
         anonymousAccessDeniedElems[i].style.display = denyAnonymousAccess ? "inline" : "none";
       }
@@ -2207,7 +2222,7 @@
     root.dispatchEvent(dropdownChangeEvent);
 
     root.querySelector("#selectedItems").textContent =
-      selectedNames.length > 0 ? selectedNames.join(", ") : "Select Rooms";
+      selectedNames.length > 0 ? selectedNames.join(", ") : "选择房间";
 
     const target = document.getElementById(root.dataset.target);
     target.textContent =
@@ -2373,7 +2388,7 @@
 
         if (data === "invalid key") {
           didCatch = true;
-          setClaimResponseState({ error: "Invalid key" });
+          setClaimResponseState({ error: "无效的密钥" });
         }
         toggleClaimingAgentLoadingState(false);
 
@@ -2438,7 +2453,7 @@
   }
 
   const initMetrics = data => {
-    if (!data?.agents?.[0]) return Promise.reject({ message: "No agent data available." })
+    if (!data?.agents?.[0]) return Promise.reject({ message: "没有可用的 Agent 数据。" })
 
     const setPercentageBarWidth = (containerId, percent) => {
       const container = document.getElementById(containerId);
@@ -2481,9 +2496,9 @@
     }
 
     const formatBytes = (bytes) => {
-      if (bytes === 0) return "0 Bytes";
+      if (bytes === 0) return "0 字节";
       const k = 1024,
-        sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+        sizes = ["字节", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
         i = Math.floor(Math.log(bytes) / Math.log(k));
       return (
         parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
@@ -2522,7 +2537,7 @@
     }
 
     const formatDuration = (seconds, short = false) => {
-      if (seconds <= 0) return "0 seconds";
+      if (seconds <= 0) return "0 秒";
       const days = Math.floor(seconds / (24 * 3600));
       const hours = Math.floor((seconds % (24 * 3600)) / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
@@ -2530,20 +2545,20 @@
 
       if (short) {
         if (days > 3) {
-          return days + " days";
+          return days + " 天";
         } else if (days > 0) {
-          return days * 24 + hours + " hours";
+          return days * 24 + hours + " 小时";
         }
       }
 
       const parts = [];
-      if (days > 0) parts.push(days + " day" + (days > 1 ? "s" : ""));
-      if (hours > 0) parts.push(hours + " hour" + (hours > 1 ? "s" : ""));
+      if (days > 0) parts.push(days + " 天");
+      if (hours > 0) parts.push(hours + " 小时");
       if (minutes > 0)
-        parts.push(minutes + " minute" + (minutes > 1 ? "s" : ""));
+        parts.push(minutes + " 分钟");
       if (remainingSeconds > 0)
         parts.push(
-          remainingSeconds + " second" + (remainingSeconds > 1 ? "s" : "")
+          remainingSeconds + " 秒"
         );
       return parts.join(" • ");
     }
@@ -2634,7 +2649,7 @@
         children: [
           {
             tag: "span",
-            innerText: "Currently Collected Metrics"
+            innerText: "当前采集的指标"
           },
           {
             tag: "span",
@@ -2840,12 +2855,12 @@
   const initSplashScreen = async () => {
     const msgSignIn = document.getElementById("msgSignIn");
     const btnSignIn = document.getElementById("btnSignIn");
-    msgSignIn.textContent = "Please wait..."
+    msgSignIn.textContent = "请稍候..."
     btnSignIn.style.display = "none"
 
     const agentInfo = await getAgentInfo()
 
-    if (!agentInfo || !Array.isArray(agentInfo.agents) || !agentInfo.agents[0]) return Promise.reject({ message: "No agent data available." })
+    if (!agentInfo || !Array.isArray(agentInfo.agents) || !agentInfo.agents[0]) return Promise.reject({ message: "没有可用的 Agent 数据。" })
 
     const agent = (agentInfo?.agents || [])[0] || {}
     const status = agent.cloud && agent.cloud.status
@@ -2867,7 +2882,7 @@
 
     if (!isCloudSignedIn) {
       msgSignIn.style.display = "inline"
-      msgSignIn.textContent = "Please sign-in to continue"
+      msgSignIn.textContent = "请先登录以继续"
       btnSignIn.style.display = "block"
     }
 
